@@ -14,7 +14,8 @@ CREATE TABLE posts (
     title varchar(250) not null,
     content text not null,
     username varchar(255) not null,
-    username_img text not null
+    username_img text not null,
+    date_time timestamp not null default CURRENT_TIMESTAMP 
 );
 CREATE TABLE comments (
     id serial primary key , 

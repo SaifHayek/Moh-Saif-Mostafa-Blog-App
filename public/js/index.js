@@ -18,3 +18,4 @@ const removeClasses = () => {
 addBlogBtn.addEventListener('click', toggleClasses);
 postsSection.addEventListener('click', removeClasses);
 closeIcon.addEventListener('click', removeClasses);
+fetch('/posts').then((data) => data.json()).then((data) => console.log(data));
