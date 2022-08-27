@@ -1,3 +1,4 @@
+
 const addBlogBtn = document.querySelector('.add-btn-blog');
 const addCategoryBtn = document.querySelector('.add-btn-category');
 const postsSection = document.querySelector('.posts');
@@ -35,5 +36,15 @@ addCategoryBtn.addEventListener('click', toggleCategoryClasses);
 postsSection.addEventListener('click', removeClasses);
 
 closeIcon.addEventListener('click', removeClasses);
-closeCategoryIcon.addEventListener('click', removeCategoryClasses);
+
+fetch('/categories')
+.then((data) =>  console.log(data.json()) /* data.json()*/)
+/*.then((data) => console.log(data))*/
+.catch((err)=>console.log(err));
+
+
 fetch('/posts').then((data) => data.json()).then((data) => console.log(data));
+
+
+closeCategoryIcon.addEventListener('click', removeCategoryClasses);
+
