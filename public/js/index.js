@@ -6,6 +6,7 @@ const addCategoryPopUp = document.querySelector('.add-category-pop-up');
 const closeIcon = document.querySelector('.close-add-icon');
 const closeCategoryIcon = document.querySelector('.close-category-icon');
 const insertBtn = document.querySelector('.pop-up-category-container button');
+const containerCategoriesLabels = document.querySelector('div.labels-container ul');
 
 // Toggle classes
 const toggleClasses = () => {
@@ -36,17 +37,39 @@ addCategoryBtn.addEventListener('click', toggleCategoryClasses);
 postsSection.addEventListener('click', removeClasses);
 
 closeIcon.addEventListener('click', removeClasses);
-
-// Fetches
-fetch('/categories')
-  .then((data) => console.log(data.json()) /* data.json() */)
-/* .then((data) => console.log(data)) */
-  .catch((err) => console.log(err));
-
-fetch('/posts').then((data) => data.json()).then((data) => console.log(data));
-
 closeCategoryIcon.addEventListener('click', removeCategoryClasses);
 
+// Fetches
+const fetchAll = () => {
+  fetch('/categories')
+    .then((data) => data.json())
+    .then((data) => {
+      console.log(data);
+      containerCategoriesLabels.textContent = '';
+      data.forEach((element, i) => {
+        const li = document.createElement('li');
+        containerCategoriesLabels.appendChild(li);
+
+        const checkboxCategory = document.createElement('input');
+        checkboxCategory.setAttribute('type', 'checkbox');
+        checkboxCategory.setAttribute('id', `${element.id}`);
+        checkboxCategory.value = element.name;
+        li.appendChild(checkboxCategory);
+
+        const labelCategory = document.createElement('label');
+        labelCategory.setAttribute('for', `${element.id}`);
+        labelCategory.textContent = element.name;
+        labelCategory.style.background = element.color;
+        li.appendChild(labelCategory);
+      });
+    })
+    .catch((err) => console.log(err));
+
+  fetch('/posts')
+    .then((data) => data.json())
+    .then((data) => console.log(data));
+};
+fetchAll();
 insertBtn.addEventListener('click', (e) => {
   e.preventDefault();
   const categoryForm = e.target.closest('form');
@@ -61,6 +84,6 @@ insertBtn.addEventListener('click', (e) => {
   };
   console.log(categoryData);
   fetch('/insertCategory', options)
-    .then((result) => console.log(result.json()))
+    .then((result) => fetchAll())
     .catch((err) => console.log(err));
 });
