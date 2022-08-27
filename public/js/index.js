@@ -1,4 +1,3 @@
-
 const addBlogBtn = document.querySelector('.add-btn-blog');
 const addCategoryBtn = document.querySelector('.add-btn-category');
 const postsSection = document.querySelector('.posts');
@@ -6,6 +5,7 @@ const addPopUp = document.querySelector('.add-pop-up');
 const addCategoryPopUp = document.querySelector('.add-category-pop-up');
 const closeIcon = document.querySelector('.close-add-icon');
 const closeCategoryIcon = document.querySelector('.close-category-icon');
+const insertBtn = document.querySelector('.pop-up-category-container button');
 
 // Toggle classes
 const toggleClasses = () => {
@@ -37,14 +37,30 @@ postsSection.addEventListener('click', removeClasses);
 
 closeIcon.addEventListener('click', removeClasses);
 
+// Fetches
 fetch('/categories')
-.then((data) =>  console.log(data.json()) /* data.json()*/)
-/*.then((data) => console.log(data))*/
-.catch((err)=>console.log(err));
-
+  .then((data) => console.log(data.json()) /* data.json() */)
+/* .then((data) => console.log(data)) */
+  .catch((err) => console.log(err));
 
 fetch('/posts').then((data) => data.json()).then((data) => console.log(data));
 
-
 closeCategoryIcon.addEventListener('click', removeCategoryClasses);
 
+insertBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  const categoryForm = e.target.closest('form');
+  const categoryData = {
+    name: categoryForm.querySelector('.category-name').value,
+    color: categoryForm.querySelector('.category-color').value,
+  };
+  const options = {
+    body: JSON.stringify(categoryData),
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  };
+  console.log(categoryData);
+  fetch('/insertCategory', options)
+    .then((result) => console.log(result.json()))
+    .catch((err) => console.log(err));
+});
