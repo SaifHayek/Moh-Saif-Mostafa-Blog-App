@@ -135,6 +135,10 @@ header{
 ::placeholder{color: #999;}
 .pop-up-container input:focus ,.pop-up-category-container input:focus {background: rgba(0, 0, 333, 0.10);}
 
+.pop-up-category-container input[type="color"]{
+  width: 20%;
+  height: 50px;
+}
 .pop-up-container button ,.pop-up-category-container button{
 	background-image: linear-gradient(to left, rgba(255, 146, 202, 0.75) 0%, rgba(145, 149, 251, 0.86) 100%);
 	box-shadow: 0 9px 25px -5px #df91fb;
