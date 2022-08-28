@@ -30,6 +30,45 @@ const removeCategoryClasses = () => {
   postsSection.classList.remove('blur');
   addCategoryPopUp.classList.remove('show-container');
 };
+
+// render
+const renderDom = (data) => {
+  postsSection.textContent = '';
+  data.forEach((post) => {
+    const divBlog = document.createElement('div');
+    divBlog.classList.add('blog_post');
+
+    const divImgPod = document.createElement('div');
+    divImgPod.classList.add('img_pod');
+
+    const img = document.createElement('img');
+    img.setAttribute('src', post.username_img);
+
+    img.setAttribute('alt', 'user\'s photo');
+    // new
+    const divContainerCopy = document.createElement('div');
+    divContainerCopy.classList.add('container_copy');
+    const h3DateTime = document.createElement('h3');
+    const DateTime = post.date_time.split('T')[0];
+    h3DateTime.textContent = DateTime;
+    const h1Title = document.createElement('h1');
+    h1Title.textContent = post.title;
+    const pContent = document.createElement('p');
+    pContent.textContent = post.content;
+    divImgPod.appendChild(img);
+    divBlog.append(divImgPod, divContainerCopy);
+    postsSection.appendChild(divBlog);
+    divContainerCopy.append(h3DateTime, h1Title, pContent);
+
+    post.my_categories.forEach((ele) => {
+      const aCategory = document.createElement('a');
+      aCategory.classList.add('btn_primary');
+      aCategory.textContent = ele.f2;
+      aCategory.style.background = ele.f3;
+      divContainerCopy.appendChild(aCategory);
+    });
+  });
+};
 // Events
 addBlogBtn.addEventListener('click', toggleClasses);
 addCategoryBtn.addEventListener('click', toggleCategoryClasses);
@@ -44,7 +83,6 @@ const fetchAll = () => {
   fetch('/categories')
     .then((data) => data.json())
     .then((data) => {
-      console.log(data);
       containerCategoriesLabels.textContent = '';
       data.forEach((element, i) => {
         const li = document.createElement('li');
@@ -67,7 +105,9 @@ const fetchAll = () => {
 
   fetch('/posts')
     .then((data) => data.json())
-    .then((data) => console.log(data));
+    .then((data) => {
+      renderDom(data);
+    });
 };
 fetchAll();
 insertBtn.addEventListener('click', (e) => {
@@ -82,7 +122,6 @@ insertBtn.addEventListener('click', (e) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
   };
-  console.log(categoryData);
   fetch('/insertCategory', options)
     .then((result) => fetchAll())
     .catch((err) => console.log(err));
